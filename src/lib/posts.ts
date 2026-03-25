@@ -1,12 +1,14 @@
-import { getPosts, getPostBySlug, getFilteredJobs, type Post } from "./supabase";
+import type { Post } from "./supabase";
 import { placeholderPosts } from "./placeholder-data";
 
-const useSupabase =
-  process.env.NEXT_PUBLIC_SUPABASE_URL &&
-  process.env.NEXT_PUBLIC_SUPABASE_URL !== "your-supabase-url-here";
+function isSupabaseConfigured(): boolean {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  return !!url && url !== "your-supabase-url-here" && url.startsWith("http");
+}
 
 export async function fetchPosts(type?: "blog" | "job"): Promise<Post[]> {
-  if (useSupabase) {
+  if (isSupabaseConfigured()) {
+    const { getPosts } = await import("./supabase");
     return getPosts(type);
   }
   let posts = placeholderPosts.filter((p) => p.status === "published");
@@ -20,7 +22,8 @@ export async function fetchPosts(type?: "blog" | "job"): Promise<Post[]> {
 }
 
 export async function fetchPostBySlug(slug: string): Promise<Post | null> {
-  if (useSupabase) {
+  if (isSupabaseConfigured()) {
+    const { getPostBySlug } = await import("./supabase");
     try {
       return await getPostBySlug(slug);
     } catch {
@@ -34,7 +37,8 @@ export async function fetchFilteredJobs(
   categories: string[],
   regions: string[]
 ): Promise<Post[]> {
-  if (useSupabase) {
+  if (isSupabaseConfigured()) {
+    const { getFilteredJobs } = await import("./supabase");
     return getFilteredJobs(categories, regions);
   }
   let posts = placeholderPosts.filter(
