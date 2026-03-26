@@ -11,6 +11,7 @@ const SECTORS = [
   "Medicine",
   "Accounting",
   "HR",
+  "IT",
 ];
 
 export default function CategoryStrip() {
@@ -28,7 +29,7 @@ export default function CategoryStrip() {
         </p>
 
         {/* Gold blocks */}
-        <div className="grid grid-cols-2 sm:grid-cols-5">
+        <div className="grid grid-cols-2 sm:grid-cols-4">
           {SECTORS.map((sector) => (
             <Link
               key={sector}
@@ -40,6 +41,14 @@ export default function CategoryStrip() {
               </span>
             </Link>
           ))}
+          <Link
+            href="/career-opportunities"
+            className="category-block border border-gold-muted/15 bg-gold/[0.03] hover:bg-gold/[0.07] transition-all duration-500 px-4 py-8 lg:py-10 flex items-center justify-center group"
+          >
+            <span className="text-gold/80 group-hover:text-gold text-sm sm:text-base tracking-[0.2em] uppercase font-heading font-medium text-center transition-colors duration-500">
+              View More
+            </span>
+          </Link>
         </div>
 
         {/* Principal credit */}

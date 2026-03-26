@@ -11,7 +11,9 @@
       "Bash(npx next:*)",
       "Bash(NEXT_PUBLIC_SUPABASE_URL=\"\" NEXT_PUBLIC_SUPABASE_ANON_KEY=\"\" npm run build)",
       "Bash(npx tsc:*)",
-      "Bash(find C:UsersAaronHead-Huntersrcapp -type f -name *admin*)"
+      "Bash(find C:UsersAaronHead-Huntersrcapp -type f -name *admin*)",
+      "Bash(taskkill:*)",
+      "Bash(cmd //c \"taskkill /PID 3132 /F\")"
     ]
   }
 }

@@ -42,9 +42,6 @@ export default function Footer() {
             </ul>
           </div>
           <div className="md:text-right">
-            <p className="text-offwhite/30 text-[11px] font-light tracking-wide">
-              01 352 617 9517
-            </p>
           </div>
         </div>
         <div className="mt-14 pt-6 border-t border-gold-muted/8 flex flex-col md:flex-row justify-between items-center gap-4">

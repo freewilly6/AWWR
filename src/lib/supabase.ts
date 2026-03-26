@@ -29,6 +29,7 @@ export const JOB_CATEGORIES = [
   "Medicine",
   "Accounting",
   "HR",
+  "IT",
 ] as const;
 
 export const LOCATION_REGIONS = [
