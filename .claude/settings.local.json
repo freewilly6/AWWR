@@ -13,7 +13,12 @@
       "Bash(npx tsc:*)",
       "Bash(find C:UsersAaronHead-Huntersrcapp -type f -name *admin*)",
       "Bash(taskkill:*)",
-      "Bash(cmd //c \"taskkill /PID 3132 /F\")"
+      "Bash(cmd //c \"taskkill /PID 3132 /F\")",
+      "Bash(mkdir -p \"C:/Users/Aaron/Head-Hunter/public\")",
+      "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/favicon.ico\" \"C:/Users/Aaron/Head-Hunter/public/\")",
+      "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/favicon-16x16.png\" \"C:/Users/Aaron/Head-Hunter/public/\")",
+      "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/favicon-32x32.png\" \"C:/Users/Aaron/Head-Hunter/public/\")",
+      "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/apple-touch-icon.png\" \"C:/Users/Aaron/Head-Hunter/public/\")"
     ]
   }
 }
