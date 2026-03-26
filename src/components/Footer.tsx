@@ -55,6 +55,17 @@ export default function Footer() {
             Jonny Scott-Slater
           </p>
         </div>
+        <p className="text-offwhite/20 text-[10px] font-light tracking-wide text-center mt-6">
+          Developed by{" "}
+          <a
+            href="https://www.codecraftstudios.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gold transition-colors duration-400"
+          >
+            CodeCraft Studios
+          </a>
+        </p>
       </div>
     </footer>
   );
