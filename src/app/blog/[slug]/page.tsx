@@ -35,7 +35,7 @@ export default async function BlogPostPage({
     post.post_type === "job" ? "Career Opportunities" : "Blog";
 
   return (
-    <div className="min-h-screen bg-charcoal pt-24 pb-16">
+    <div className="min-h-screen bg-charcoal-light pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-6">
         <Link
           href={backLink}

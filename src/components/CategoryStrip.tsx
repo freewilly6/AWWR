@@ -46,8 +46,8 @@ export default function CategoryStrip() {
         <div className="mt-12 text-center">
           <div className="inline-flex items-center gap-4">
             <span className="w-8 h-px bg-gold-muted/20" />
-            <p className="text-gold-muted/40 text-lg sm:text-xl tracking-[0.3em] uppercase font-heading">
-              Jonny Scott-Slater
+            <p className="text-gold-muted/40 text-lg sm:text-xl tracking-[0.3em] uppercase font-heading font-bold">
+              Jonny Scott&#8209;Slater
             </p>
             <span className="w-8 h-px bg-gold-muted/20" />
           </div>

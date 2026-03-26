@@ -10,7 +10,8 @@
       "Bash(npm run:*)",
       "Bash(npx next:*)",
       "Bash(NEXT_PUBLIC_SUPABASE_URL=\"\" NEXT_PUBLIC_SUPABASE_ANON_KEY=\"\" npm run build)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(find C:UsersAaronHead-Huntersrcapp -type f -name *admin*)"
     ]
   }
 }

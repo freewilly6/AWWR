@@ -13,7 +13,7 @@ export default async function BlogPage() {
   const posts = await fetchPosts("blog");
 
   return (
-    <div className="min-h-screen bg-charcoal pt-24 pb-16">
+    <div className="min-h-screen bg-charcoal-light pt-24 pb-16">
       <div className="max-w-4xl mx-auto px-6">
         <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold pinstripe-text mb-10 pb-1">
           Blog
@@ -29,7 +29,7 @@ export default async function BlogPage() {
               <Link
                 href={`/blog/${post.slug}`}
                 key={post.id}
-                className="block border border-gold-muted/15 hover:border-gold-muted/30 bg-charcoal-light hover:bg-charcoal-mid transition-colors duration-300 p-6"
+                className="block border border-gold-muted/25 hover:border-gold-muted/40 bg-charcoal hover:bg-charcoal-mid transition-colors duration-300 p-6"
               >
                 <h2 className="font-heading text-gold text-xl mb-2">
                   {post.title}

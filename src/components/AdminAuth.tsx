@@ -99,9 +99,6 @@ export default function AdminAuth({ children }: { children: ReactNode }) {
             </button>
           </form>
 
-          <p className="text-offwhite/20 text-[10px] text-center mt-8">
-            Create admin users in your Supabase dashboard under Authentication.
-          </p>
         </div>
       </div>
     );
