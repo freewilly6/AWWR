@@ -1,6 +1,8 @@
 import { fetchPosts } from "@/lib/posts";
 import JobFilters from "@/components/JobFilters";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Career Opportunities | American — World Wide Recruitment",
   description:

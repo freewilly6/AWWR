@@ -1,6 +1,8 @@
 import { fetchPosts } from "@/lib/posts";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Blog | American — World Wide Recruitment",
   description:
@@ -13,7 +15,7 @@ export default async function BlogPage() {
   return (
     <div className="min-h-screen bg-charcoal pt-24 pb-16">
       <div className="max-w-4xl mx-auto px-6">
-        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold pinstripe-text mb-10">
+        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold pinstripe-text mb-10 pb-1">
           Blog
         </h1>
 

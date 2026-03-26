@@ -32,20 +32,20 @@ export default function Home() {
 
         {/* Tagline row */}
         <div className="mt-8 w-full max-w-5xl px-6 animate-fade-up animate-delay-3">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-0">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-0 text-center">
             {[
               "Head Hunter",
               "Executive Search",
               "Retained & Contingency Business",
             ].map((line, i) => (
-              <span key={i} className="flex items-center">
+              <span key={i} className="flex items-center justify-center">
                 {i > 0 && (
                   <span
                     className="hidden sm:inline-block w-px h-4 bg-gold-muted/30 mx-10"
                     aria-hidden="true"
                   />
                 )}
-                <span className="text-gold-muted/70 text-[11px] sm:text-xs tracking-[0.25em] uppercase font-heading font-medium">
+                <span className="text-gold-muted/70 text-sm sm:text-base tracking-[0.25em] uppercase font-heading font-medium">
                   {line}
                 </span>
               </span>

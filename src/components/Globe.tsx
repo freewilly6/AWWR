@@ -2,6 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { feature } from "topojson-client";
+import type { Topology, GeometryCollection } from "topojson-specification";
+import type { FeatureCollection, Geometry, Position } from "geojson";
 
 const HIT_LOCATIONS = [
   { lat: 40.7128, lng: -74.006, label: "New York" },
@@ -188,116 +191,52 @@ export default function Globe() {
       globeGroup.add(new THREE.Line(geo, mat));
     }
 
-    // ── Continent outlines — higher fidelity ──
-    const continents: [number, number][][] = [
-      // North America
-      [
-        [60, -140], [63, -165], [65, -168], [68, -165], [70, -160],
-        [72, -155], [72, -140], [72, -130], [70, -120], [65, -90],
-        [60, -80], [55, -65], [50, -57], [47, -53], [45, -62],
-        [44, -66], [42, -70], [40, -74], [35, -75], [30, -81],
-        [25, -80], [25, -90], [20, -97], [18, -95], [15, -88],
-        [10, -84], [8, -77], [9, -79], [15, -83], [20, -87],
-        [22, -97], [25, -105], [28, -110], [30, -115], [32, -117],
-        [34, -118], [37, -122], [40, -124], [43, -124], [46, -124],
-        [48, -125], [50, -128], [53, -130], [55, -133], [57, -136],
-        [58, -138], [60, -140],
-      ],
-      // South America
-      [
-        [12, -72], [10, -67], [8, -60], [5, -52], [2, -50],
-        [0, -50], [-2, -44], [-5, -35], [-8, -35], [-12, -37],
-        [-15, -39], [-18, -40], [-22, -41], [-23, -43], [-25, -47],
-        [-28, -49], [-30, -51], [-33, -53], [-35, -57], [-38, -58],
-        [-40, -62], [-43, -65], [-46, -66], [-48, -66], [-50, -68],
-        [-52, -69], [-54, -68], [-55, -67], [-54, -65], [-52, -70],
-        [-48, -75], [-45, -75], [-40, -73], [-35, -72], [-30, -71],
-        [-25, -70], [-20, -70], [-15, -75], [-10, -77], [-5, -80],
-        [0, -78], [5, -77], [8, -73], [10, -72], [12, -72],
-      ],
-      // Europe
-      [
-        [36, -9], [37, -7], [38, -5], [40, -4], [42, -3],
-        [43, -8], [44, -2], [46, -1], [47, 2], [48, 2],
-        [49, 0], [51, 2], [52, 4], [54, 8], [55, 8],
-        [56, 10], [58, 6], [59, 5], [60, 5], [62, 5],
-        [63, 8], [65, 12], [67, 15], [69, 18], [70, 20],
-        [71, 26], [70, 30], [69, 33], [68, 38], [65, 40],
-        [60, 30], [57, 28], [55, 28], [52, 24], [50, 25],
-        [48, 22], [46, 16], [45, 14], [43, 16], [42, 19],
-        [41, 22], [40, 26], [39, 26], [38, 23], [37, 22],
-        [36, 22], [35, 24], [36, 15], [38, 12], [38, 5],
-        [37, 0], [36, -5], [36, -9],
-      ],
-      // Africa
-      [
-        [35, -5], [37, 10], [35, 11], [33, 12], [32, 25],
-        [31, 32], [28, 34], [22, 37], [18, 40], [14, 42],
-        [12, 44], [10, 44], [5, 42], [2, 42], [0, 42],
-        [-3, 40], [-6, 40], [-10, 40], [-12, 44], [-15, 41],
-        [-18, 36], [-20, 35], [-23, 35], [-26, 33], [-28, 32],
-        [-30, 31], [-32, 29], [-34, 26], [-35, 20], [-34, 18],
-        [-32, 18], [-28, 16], [-22, 14], [-18, 12], [-14, 12],
-        [-10, 14], [-7, 10], [-5, 9], [-2, 7], [0, 6],
-        [3, 3], [5, 1], [5, -2], [6, -5], [8, -8],
-        [5, -10], [8, -14], [12, -16], [15, -17], [18, -16],
-        [21, -17], [25, -15], [28, -13], [30, -10], [32, -5],
-        [34, -2], [35, -5],
-      ],
-      // Asia
-      [
-        [70, 40], [72, 50], [74, 60], [75, 70], [73, 80],
-        [72, 90], [70, 100], [68, 110], [65, 120], [62, 130],
-        [58, 135], [55, 138], [53, 140], [50, 140], [46, 143],
-        [43, 145], [40, 132], [38, 130], [36, 130], [35, 132],
-        [33, 130], [30, 122], [25, 120], [22, 115], [20, 110],
-        [15, 108], [10, 106], [5, 105], [1, 104], [-2, 106],
-        [-5, 110], [-8, 115], [-5, 105], [0, 100], [5, 98],
-        [10, 99], [15, 100], [20, 96], [22, 92], [24, 89],
-        [22, 88], [24, 85], [28, 84], [30, 82], [33, 78],
-        [35, 75], [32, 68], [30, 65], [28, 60], [25, 57],
-        [24, 52], [26, 50], [28, 48], [30, 48], [33, 44],
-        [35, 36], [38, 34], [40, 30], [42, 28], [45, 30],
-        [48, 35], [50, 40], [53, 42], [55, 40], [58, 42],
-        [60, 50], [63, 45], [65, 40], [68, 40], [70, 40],
-      ],
-      // Australia
-      [
-        [-12, 132], [-12, 137], [-14, 140], [-16, 145], [-18, 146],
-        [-20, 148], [-23, 150], [-26, 153], [-28, 153], [-30, 153],
-        [-33, 152], [-35, 150], [-37, 150], [-38, 146], [-38, 145],
-        [-37, 140], [-36, 138], [-35, 137], [-35, 135], [-34, 130],
-        [-33, 126], [-32, 120], [-30, 115], [-26, 114], [-22, 114],
-        [-18, 122], [-15, 125], [-14, 128], [-12, 132],
-      ],
-      // Great Britain
-      [
-        [50, -5], [51, 1], [52, 1], [53, 0], [54, -1],
-        [55, -2], [56, -3], [57, -5], [58, -5], [58, -3],
-        [57, -2], [56, -2], [55, -1], [53, 0], [52, 0],
-        [51, 0], [50, -5],
-      ],
-      // Japan
-      [
-        [31, 131], [33, 131], [34, 132], [35, 133], [35, 135],
-        [36, 136], [37, 137], [38, 139], [39, 140], [40, 140],
-        [41, 140], [43, 145], [42, 143], [40, 140], [38, 139],
-        [36, 137], [35, 135], [34, 133], [33, 131], [31, 131],
-      ],
-    ];
+    // ── Continent outlines from TopoJSON (real world data) ──
+    const continentGroup = new THREE.Group();
+    globeGroup.add(continentGroup);
 
-    continents.forEach((coords) => {
-      const points = coords.map(([lat, lng]) =>
-        latLngToVector3(lat, lng, 1.006)
-      );
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      const mat = new THREE.LineBasicMaterial({
+    function addGeoJsonLines(geojson: FeatureCollection<Geometry>) {
+      const lineMat = new THREE.LineBasicMaterial({
         color: 0xc9a84c,
         transparent: true,
-        opacity: 0.25,
+        opacity: 0.45,
       });
-      globeGroup.add(new THREE.Line(geo, mat));
-    });
+
+      function processRing(coords: Position[]) {
+        const points = coords.map(([lng, lat]) =>
+          latLngToVector3(lat, lng, 1.006)
+        );
+        if (points.length < 2) return;
+        const geo = new THREE.BufferGeometry().setFromPoints(points);
+        continentGroup.add(new THREE.Line(geo, lineMat.clone()));
+      }
+
+      geojson.features.forEach((feat) => {
+        const geom = feat.geometry;
+        if (geom.type === "Polygon") {
+          geom.coordinates.forEach(processRing);
+        } else if (geom.type === "MultiPolygon") {
+          geom.coordinates.forEach((polygon) => {
+            polygon.forEach(processRing);
+          });
+        }
+      });
+    }
+
+    // Load world-110m TopoJSON
+    fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json")
+      .then((res) => res.json())
+      .then((topology: Topology) => {
+        const land = feature(
+          topology,
+          topology.objects.land as GeometryCollection
+        ) as FeatureCollection<Geometry>;
+        addGeoJsonLines(land);
+      })
+      .catch(() => {
+        // Fallback: if fetch fails, show nothing for continents
+        console.warn("Failed to load world outline data");
+      });
 
     // ── Connection arcs ──
     const arcGroup = new THREE.Group();
