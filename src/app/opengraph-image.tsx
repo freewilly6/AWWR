@@ -18,7 +18,7 @@ export default async function OGImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           background: "#080808",
@@ -51,59 +51,51 @@ export default async function OGImage() {
           }}
         />
 
-        {/* Logo */}
+        {/* Logo - centered */}
         <img
           src={logoBase64}
           alt=""
-          width={400}
-          height={400}
+          width={300}
+          height={300}
           style={{
             borderRadius: "50%",
-            marginRight: "48px",
+            marginBottom: "24px",
           }}
         />
 
-        {/* Text content */}
+        {/* Title */}
         <div
           style={{
+            fontSize: 42,
+            fontWeight: 700,
+            color: "#ccc8be",
+            marginBottom: "8px",
             display: "flex",
-            flexDirection: "column",
-            maxWidth: "600px",
+            textAlign: "center",
           }}
         >
-          <div
-            style={{
-              fontSize: 40,
-              fontWeight: 700,
-              color: "#ccc8be",
-              marginBottom: "12px",
-              lineHeight: 1.2,
-              display: "flex",
-            }}
-          >
-            American — World Wide Recruitment
-          </div>
+          American — World Wide Recruitment
+        </div>
 
-          {/* Gold divider */}
-          <div
-            style={{
-              width: "80px",
-              height: "3px",
-              background: "#c9a84c",
-              marginBottom: "16px",
-            }}
-          />
+        {/* Gold divider */}
+        <div
+          style={{
+            width: "80px",
+            height: "3px",
+            background: "#c9a84c",
+            marginBottom: "12px",
+          }}
+        />
 
-          <div
-            style={{
-              fontSize: 22,
-              color: "rgba(204, 200, 190, 0.6)",
-              lineHeight: 1.5,
-              display: "flex",
-            }}
-          >
-            Global Executive Search & Headhunting
-          </div>
+        {/* Subtitle */}
+        <div
+          style={{
+            fontSize: 24,
+            color: "rgba(204, 200, 190, 0.6)",
+            display: "flex",
+          }}
+        >
+          Global Executive Search & Headhunting
         </div>
 
         {/* URL */}
@@ -111,7 +103,6 @@ export default async function OGImage() {
           style={{
             position: "absolute",
             bottom: "20px",
-            right: "32px",
             fontSize: 16,
             color: "#8a7232",
             letterSpacing: "0.05em",
