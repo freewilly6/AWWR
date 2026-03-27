@@ -2,6 +2,28 @@ import { fetchPostBySlug, fetchPosts } from "@/lib/posts";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+
+function processBodyLinks(html: string, siteHost: string): string {
+  return html.replace(/<a\s+([^>]*href="([^"]*)"[^>]*)>/gi, (match, attrs, href) => {
+    // Relative paths are always internal
+    if (!/^https?:\/\//i.test(href)) return match;
+
+    try {
+      const url = new URL(href);
+      // If the link points to our own site, treat it as internal
+      if (url.host === siteHost) return match;
+    } catch {
+      return match;
+    }
+
+    // External link — open in new tab
+    if (!/target=/.test(attrs)) {
+      return `<a ${attrs} target="_blank" rel="noopener noreferrer">`;
+    }
+    return match;
+  });
+}
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +47,8 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const headersList = await headers();
+  const siteHost = headersList.get("host") || "localhost";
   const post = await fetchPostBySlug(slug);
 
   if (!post) notFound();
@@ -70,7 +94,7 @@ export default async function BlogPostPage({
           <div className="border-t border-gold-muted/15 pt-8">
             <div
               className="post-body text-offwhite/70 text-[15px]"
-              dangerouslySetInnerHTML={{ __html: post.body }}
+              dangerouslySetInnerHTML={{ __html: processBodyLinks(post.body, siteHost) }}
             />
           </div>
         </article>

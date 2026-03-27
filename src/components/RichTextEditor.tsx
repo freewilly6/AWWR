@@ -46,7 +46,10 @@ export default function RichTextEditor({
       }),
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: { class: "text-gold underline" },
+        defaultProtocol: "https",
+        HTMLAttributes: {
+          class: "text-gold underline",
+        },
       }),
     ],
     content,
