@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.usa-world-wide-recruitment.com"),
   title: "American — World Wide Recruitment | Executive Search & Headhunting",
   description:
     "Global executive search, headhunting, and retained recruitment. Placing senior leaders across law, finance, engineering, AI, medicine, and industry worldwide.",

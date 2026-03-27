@@ -22,7 +22,10 @@
       "Bash(find /c/Users/Aaron/Head-Hunter -type f -name *blog* ! -path */node_modules/* ! -path */.next/* ! -path */.git/*)",
       "Bash(find /c/Users/Aaron/Head-Hunter -maxdepth 3 -type d ! -path */node_modules/* ! -path */.next/* ! -path */.git/*)",
       "Bash(xargs grep:*)",
-      "Bash(xargs head:*)"
+      "Bash(xargs head:*)",
+      "Bash(NEXT_PUBLIC_SUPABASE_URL=\"\" NEXT_PUBLIC_SUPABASE_ANON_KEY=\"\" npx next build)",
+      "Bash(curl:*)",
+      "Bash(pkill -f \"next dev\")"
     ]
   }
 }
