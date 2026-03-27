@@ -18,7 +18,10 @@
       "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/favicon.ico\" \"C:/Users/Aaron/Head-Hunter/public/\")",
       "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/favicon-16x16.png\" \"C:/Users/Aaron/Head-Hunter/public/\")",
       "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/favicon-32x32.png\" \"C:/Users/Aaron/Head-Hunter/public/\")",
-      "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/apple-touch-icon.png\" \"C:/Users/Aaron/Head-Hunter/public/\")"
+      "Bash(cp \"C:/Users/Aaron/Head-Hunter/src/lib/favicon_io/apple-touch-icon.png\" \"C:/Users/Aaron/Head-Hunter/public/\")",
+      "Bash(find /c/Users/Aaron/Head-Hunter -type f -name *blog* ! -path */node_modules/* ! -path */.next/* ! -path */.git/*)",
+      "Bash(find /c/Users/Aaron/Head-Hunter -maxdepth 3 -type d ! -path */node_modules/* ! -path */.next/* ! -path */.git/*)",
+      "Bash(xargs grep:*)"
     ]
   }
 }
