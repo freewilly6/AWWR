@@ -22,7 +22,10 @@ export default function Home() {
 
         {/* Title */}
         <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[0.03em] text-center px-6 pinstripe-text animate-fade-up animate-delay-1">
-          United States — World Wide Recruitment
+          <span className="block sm:inline">United States</span>
+          <span className="block sm:hidden leading-none py-0.5">—</span>
+          <span className="hidden sm:inline"> — </span>
+          <span className="block sm:inline">World Wide Recruitment</span>
         </h1>
 
         {/* Thin gold rule */}

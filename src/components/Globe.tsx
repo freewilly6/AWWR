@@ -137,8 +137,9 @@ export default function Globe() {
           vec3 texColor = texture2D(earthMap, vUv).rgb;
           float rim = 1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0)));
           float rimPow = pow(rim, 3.0);
-          vec3 rimColor = vec3(0.4, 0.6, 1.0);
-          vec3 color = texColor + rimColor * rimPow * 0.2;
+          vec3 rimColor = vec3(0.79, 0.66, 0.30);
+          float rimGlow = pow(rim, 2.0);
+          vec3 color = texColor + rimColor * rimGlow * 0.7;
           float alpha = 0.9 + rimPow * 0.1;
           gl_FragColor = vec4(color, alpha);
         }
@@ -210,6 +211,51 @@ export default function Globe() {
         } else if (geom.type === "MultiPolygon") {
           geom.coordinates.forEach((polygon) => {
             polygon.forEach(fillRing);
+          });
+        }
+      });
+
+      // Stroke continent outlines for crisp definition
+      earthCtx.strokeStyle = "rgba(201, 168, 76, 0.18)";
+      earthCtx.lineWidth = 1.5;
+      earthCtx.lineJoin = "round";
+
+      function strokeRing(coords: Position[]) {
+        if (coords.length < 3) return;
+        const segments: Position[][] = [];
+        let current: Position[] = [coords[0]];
+        for (let i = 1; i < coords.length; i++) {
+          const prevLng = coords[i - 1][0];
+          const curLng = coords[i][0];
+          if (Math.abs(curLng - prevLng) > 180) {
+            if (current.length >= 3) segments.push(current);
+            current = [coords[i]];
+          } else {
+            current.push(coords[i]);
+          }
+        }
+        if (current.length >= 3) segments.push(current);
+
+        segments.forEach((seg) => {
+          earthCtx.beginPath();
+          const [sx, sy] = lngLatToCanvas(seg[0][0], seg[0][1]);
+          earthCtx.moveTo(sx, sy);
+          for (let i = 1; i < seg.length; i++) {
+            const [x, y] = lngLatToCanvas(seg[i][0], seg[i][1]);
+            earthCtx.lineTo(x, y);
+          }
+          earthCtx.closePath();
+          earthCtx.stroke();
+        });
+      }
+
+      geojson.features.forEach((feat) => {
+        const geom = feat.geometry;
+        if (geom.type === "Polygon") {
+          geom.coordinates.forEach(strokeRing);
+        } else if (geom.type === "MultiPolygon") {
+          geom.coordinates.forEach((polygon) => {
+            polygon.forEach(strokeRing);
           });
         }
       });
@@ -289,42 +335,6 @@ export default function Globe() {
       globeGroup.add(sprite);
     });
 
-    // ── Pulse system ──
-    const pulseRings: {
-      mesh: THREE.Mesh;
-      startTime: number;
-    }[] = [];
-
-    function createPulse(pos: THREE.Vector3) {
-      const geo = new THREE.RingGeometry(0.005, 0.012, 32);
-      const mat = new THREE.MeshBasicMaterial({
-        color: 0xc9a84c,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.DoubleSide,
-        depthTest: true,
-        blending: THREE.AdditiveBlending,
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.copy(pos);
-      mesh.lookAt(new THREE.Vector3(0, 0, 0));
-      globeGroup.add(mesh);
-      pulseRings.push({ mesh, startTime: Date.now() });
-    }
-
-    // Stagger pulses at different intervals for organic feel
-    let pulseCounter = 0;
-    const pulseInterval = setInterval(() => {
-      // Pulse 1-3 random dots at varying intervals
-      const count = Math.random() > 0.6 ? 2 : 1;
-      for (let n = 0; n < count; n++) {
-        const idx = Math.floor(Math.random() * HIT_LOCATIONS.length);
-        const loc = HIT_LOCATIONS[idx];
-        createPulse(latLngToVector3(loc.lat, loc.lng, 1.013));
-      }
-      pulseCounter++;
-    }, 1800 + Math.random() * 1200);
-
     // Subtle tilt
     globeGroup.rotation.x = 0.2;
     globeGroup.rotation.z = 0.05;
@@ -342,25 +352,6 @@ export default function Globe() {
 
       // Very subtle oscillation on tilt for life
       globeGroup.rotation.x = 0.2 + Math.sin(elapsed * 0.15) * 0.02;
-
-      // Update pulse rings
-      const now = Date.now();
-      for (let i = pulseRings.length - 1; i >= 0; i--) {
-        const ring = pulseRings[i];
-        const age = (now - ring.startTime) / 1000;
-        if (age > 3.5) {
-          globeGroup.remove(ring.mesh);
-          ring.mesh.geometry.dispose();
-          (ring.mesh.material as THREE.MeshBasicMaterial).dispose();
-          pulseRings.splice(i, 1);
-        } else {
-          const scale = 1 + age * 3;
-          ring.mesh.scale.set(scale, scale, scale);
-          const fadeOut = Math.pow(1 - age / 3.5, 1.5);
-          (ring.mesh.material as THREE.MeshBasicMaterial).opacity =
-            0.5 * fadeOut;
-        }
-      }
 
       // Subtle arc opacity pulsing
       arcGroup.children.forEach((child, idx) => {
@@ -384,7 +375,6 @@ export default function Globe() {
 
     return () => {
       cancelAnimationFrame(animId);
-      clearInterval(pulseInterval);
       window.removeEventListener("resize", handleResize);
       renderer.dispose();
       if (container.contains(renderer.domElement)) {

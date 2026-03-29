@@ -27,7 +27,8 @@
       "Bash(curl:*)",
       "Bash(pkill -f \"next dev\")",
       "Bash(find . -type f -name *globe* -o -name *Globe*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(grep -r \"globe\\\\|Globe\\\\|3d\\\\|3D\" /c/Users/Aaron/Head-Hunter/src --include=*.css --include=*.tsx --include=*.ts)"
     ]
   }
 }
