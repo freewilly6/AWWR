@@ -33,7 +33,7 @@ export default function Header() {
           href="/"
           className="font-heading text-gold text-sm tracking-[0.25em] uppercase transition-opacity duration-300 hover:opacity-70"
         >
-          AWWR
+          USWWR
         </Link>
 
         {/* Desktop */}
@@ -42,7 +42,7 @@ export default function Header() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="text-offwhite/50 hover:text-gold text-[10px] tracking-[0.2em] uppercase transition-colors duration-400 font-light"
+                className="text-gold hover:text-offwhite/50 text-[10px] tracking-[0.2em] uppercase transition-colors duration-400 font-light"
               >
                 {link.label}
               </Link>
@@ -89,7 +89,7 @@ export default function Header() {
                 <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="text-offwhite/50 hover:text-gold text-xs tracking-[0.2em] uppercase transition-colors duration-300 block font-light"
+                  className="text-gold hover:text-offwhite/50 text-xs tracking-[0.2em] uppercase transition-colors duration-300 block font-light"
                 >
                   {link.label}
                 </Link>

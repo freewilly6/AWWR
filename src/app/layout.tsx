@@ -5,13 +5,13 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.usa-world-wide-recruitment.com"),
-  title: "American — World Wide Recruitment | Executive Search & Headhunting",
+  title: "United States — World Wide Recruitment | Executive Search & Headhunting",
   description:
     "Global executive search, headhunting, and retained recruitment. Placing senior leaders across law, finance, engineering, AI, medicine, and industry worldwide.",
   keywords:
     "executive search, headhunting, retained recruitment, executive recruitment, global recruitment",
   openGraph: {
-    title: "American — World Wide Recruitment",
+    title: "United States — World Wide Recruitment",
     description:
       "Global executive search and headhunting. Retained and contingency recruitment for senior appointments worldwide.",
     type: "website",

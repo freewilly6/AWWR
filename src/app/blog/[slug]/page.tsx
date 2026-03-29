@@ -36,7 +36,7 @@ export async function generateMetadata({
   const post = await fetchPostBySlug(slug);
   if (!post) return { title: "Not Found" };
   return {
-    title: post.seo_title || `${post.title} | American — World Wide Recruitment`,
+    title: post.seo_title || `${post.title} | United States — World Wide Recruitment`,
     description: post.meta_description || post.excerpt,
   };
 }

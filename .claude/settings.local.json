@@ -25,7 +25,9 @@
       "Bash(xargs head:*)",
       "Bash(NEXT_PUBLIC_SUPABASE_URL=\"\" NEXT_PUBLIC_SUPABASE_ANON_KEY=\"\" npx next build)",
       "Bash(curl:*)",
-      "Bash(pkill -f \"next dev\")"
+      "Bash(pkill -f \"next dev\")",
+      "Bash(find . -type f -name *globe* -o -name *Globe*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

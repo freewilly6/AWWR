@@ -4,7 +4,7 @@ import JobFilters from "@/components/JobFilters";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Career Opportunities | American — World Wide Recruitment",
+  title: "Career Opportunities | United States — World Wide Recruitment",
   description:
     "Executive career opportunities worldwide. Browse retained and contingency search positions across law, finance, engineering, AI, medicine, and more.",
 };

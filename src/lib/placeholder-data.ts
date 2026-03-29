@@ -24,7 +24,7 @@ export const placeholderPosts: Post[] = [
     job_category: "Law",
     location_region: "United States",
     status: "published",
-    seo_title: "General Counsel Position — Global Financial Services | AWWR",
+    seo_title: "General Counsel Position — Global Financial Services | USWWR",
     meta_description: "Retained executive search for General Counsel to oversee legal operations across twelve jurisdictions at a Fortune 500 financial services group.",
     created_at: "2026-03-20T00:00:00Z",
     updated_at: "2026-03-20T00:00:00Z",
@@ -173,7 +173,7 @@ export const placeholderPosts: Post[] = [
       "How the executive search profession is adapting to serve boards and leadership teams in an era of unprecedented complexity.",
     body: `<p>The executive search profession has evolved considerably over the past two decades. Where once the role centred primarily on sourcing candidates from established networks, today's retained search partners function as strategic advisors to boards and executive committees.</p>
 <p>This shift reflects broader changes in corporate governance, regulatory complexity, and the globalisation of talent markets. Boards increasingly require search partners who understand not only the technical requirements of a role but the cultural, strategic, and geopolitical context in which leaders must operate.</p>
-<p>At American - World Wide Recruitment, we have built our practice around this understanding. Our partners bring deep sector knowledge and maintain relationships that span decades, not deal cycles.</p>`,
+<p>At United States - World Wide Recruitment, we have built our practice around this understanding. Our partners bring deep sector knowledge and maintain relationships that span decades, not deal cycles.</p>`,
     published_at: "2026-03-17T00:00:00Z",
     featured_image: null,
     post_type: "blog",

@@ -102,125 +102,119 @@ export default function Globe() {
     const globeGroup = new THREE.Group();
     scene.add(globeGroup);
 
-    // ── Atmospheric glow halo ──
-    const glowGeo = new THREE.SphereGeometry(1.15, 64, 64);
-    const glowMat = new THREE.ShaderMaterial({
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        void main() {
-          float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.0);
-          gl_FragColor = vec4(0.788, 0.659, 0.298, 1.0) * intensity * 0.4;
-        }
-      `,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide,
-      transparent: true,
-      depthWrite: false,
-    });
-    const glowMesh = new THREE.Mesh(glowGeo, glowMat);
-    globeGroup.add(glowMesh);
+    // ── Earth texture canvas ──
+    const earthCanvas = document.createElement("canvas");
+    earthCanvas.width = 2048;
+    earthCanvas.height = 1024;
+    const earthCtx = earthCanvas.getContext("2d")!;
 
-    // ── Globe sphere with rim lighting ──
+    // Ocean blue background
+    earthCtx.fillStyle = "#1a4a7a";
+    earthCtx.fillRect(0, 0, 2048, 1024);
+
+    const earthTexture = new THREE.CanvasTexture(earthCanvas);
+
+    // ── Globe sphere with Earth texture ──
     const sphereGeo = new THREE.SphereGeometry(1, 64, 64);
     const sphereMat = new THREE.ShaderMaterial({
+      uniforms: {
+        earthMap: { value: earthTexture },
+      },
       vertexShader: `
         varying vec3 vNormal;
-        varying vec3 vPosition;
+        varying vec2 vUv;
         void main() {
           vNormal = normalize(normalMatrix * normal);
-          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+          vUv = uv;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
       fragmentShader: `
+        uniform sampler2D earthMap;
         varying vec3 vNormal;
-        varying vec3 vPosition;
+        varying vec2 vUv;
         void main() {
+          vec3 texColor = texture2D(earthMap, vUv).rgb;
           float rim = 1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0)));
           float rimPow = pow(rim, 3.0);
-          // Dark sphere with subtle gold rim
-          vec3 baseColor = vec3(0.04, 0.04, 0.04);
-          vec3 rimColor = vec3(0.788, 0.659, 0.298);
-          vec3 color = baseColor + rimColor * rimPow * 0.15;
-          float alpha = 0.85 + rimPow * 0.15;
+          vec3 rimColor = vec3(0.4, 0.6, 1.0);
+          vec3 color = texColor + rimColor * rimPow * 0.2;
+          float alpha = 0.9 + rimPow * 0.1;
           gl_FragColor = vec4(color, alpha);
         }
       `,
       transparent: true,
+      depthWrite: true,
     });
     const sphere = new THREE.Mesh(sphereGeo, sphereMat);
     globeGroup.add(sphere);
 
-    // ── Grid lines — latitude ──
-    for (let i = -80; i <= 80; i += 20) {
-      const points: THREE.Vector3[] = [];
-      for (let lng = 0; lng <= 360; lng += 3) {
-        points.push(latLngToVector3(i, lng, 1.003));
+    // ── Paint land masses onto Earth texture ──
+    function paintLandOnTexture(geojson: FeatureCollection<Geometry>) {
+      function lngLatToCanvas(lng: number, lat: number): [number, number] {
+        const x = ((lng + 180) / 360) * 2048;
+        const y = ((90 - lat) / 180) * 1024;
+        return [x, y];
       }
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      const mat = new THREE.LineBasicMaterial({
-        color: 0xc9a84c,
-        transparent: true,
-        opacity: 0.06,
-      });
-      globeGroup.add(new THREE.Line(geo, mat));
-    }
 
-    // ── Grid lines — longitude ──
-    for (let i = 0; i < 360; i += 20) {
-      const points: THREE.Vector3[] = [];
-      for (let lat = -90; lat <= 90; lat += 3) {
-        points.push(latLngToVector3(lat, i, 1.003));
+      function fillRing(coords: Position[]) {
+        if (coords.length < 3) return;
+
+        // Split ring into segments that don't cross the antimeridian
+        const segments: Position[][] = [];
+        let current: Position[] = [coords[0]];
+
+        for (let i = 1; i < coords.length; i++) {
+          const prevLng = coords[i - 1][0];
+          const curLng = coords[i][0];
+          if (Math.abs(curLng - prevLng) > 180) {
+            // Antimeridian crossing — end current segment, start new one
+            if (current.length >= 3) segments.push(current);
+            current = [coords[i]];
+          } else {
+            current.push(coords[i]);
+          }
+        }
+        if (current.length >= 3) segments.push(current);
+
+        // Draw each segment separately
+        segments.forEach((seg) => {
+          earthCtx.beginPath();
+          const [sx, sy] = lngLatToCanvas(seg[0][0], seg[0][1]);
+          earthCtx.moveTo(sx, sy);
+          for (let i = 1; i < seg.length; i++) {
+            const [x, y] = lngLatToCanvas(seg[i][0], seg[i][1]);
+            earthCtx.lineTo(x, y);
+          }
+          earthCtx.closePath();
+          earthCtx.fill();
+        });
       }
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      const mat = new THREE.LineBasicMaterial({
-        color: 0xc9a84c,
-        transparent: true,
-        opacity: 0.05,
-      });
-      globeGroup.add(new THREE.Line(geo, mat));
-    }
 
-    // ── Continent outlines from TopoJSON (real world data) ──
-    const continentGroup = new THREE.Group();
-    globeGroup.add(continentGroup);
-
-    function addGeoJsonLines(geojson: FeatureCollection<Geometry>) {
-      const lineMat = new THREE.LineBasicMaterial({
-        color: 0xc9a84c,
-        transparent: true,
-        opacity: 0.45,
-      });
-
-      function processRing(coords: Position[]) {
-        const points = coords.map(([lng, lat]) =>
-          latLngToVector3(lat, lng, 1.006)
-        );
-        if (points.length < 2) return;
-        const geo = new THREE.BufferGeometry().setFromPoints(points);
-        continentGroup.add(new THREE.Line(geo, lineMat.clone()));
-      }
+      // Fill land with green/brown earth tones
+      const landGradient = earthCtx.createLinearGradient(0, 0, 0, 1024);
+      landGradient.addColorStop(0, "#6b8a5e");    // northern tundra green
+      landGradient.addColorStop(0.15, "#5a7a4a"); // taiga
+      landGradient.addColorStop(0.3, "#4a7a3a");  // temperate green
+      landGradient.addColorStop(0.45, "#8a7a3a"); // arid/desert tan
+      landGradient.addColorStop(0.55, "#3a7a2a"); // tropical green
+      landGradient.addColorStop(0.7, "#4a7a3a");  // southern temperate
+      landGradient.addColorStop(0.85, "#5a7a4a"); // southern lands
+      landGradient.addColorStop(1, "#dde8dd");    // Antarctica white
+      earthCtx.fillStyle = landGradient;
 
       geojson.features.forEach((feat) => {
         const geom = feat.geometry;
         if (geom.type === "Polygon") {
-          geom.coordinates.forEach(processRing);
+          geom.coordinates.forEach(fillRing);
         } else if (geom.type === "MultiPolygon") {
           geom.coordinates.forEach((polygon) => {
-            polygon.forEach(processRing);
+            polygon.forEach(fillRing);
           });
         }
       });
+
+      earthTexture.needsUpdate = true;
     }
 
     // Load world-110m TopoJSON
@@ -231,10 +225,9 @@ export default function Globe() {
           topology,
           topology.objects.land as GeometryCollection
         ) as FeatureCollection<Geometry>;
-        addGeoJsonLines(land);
+        paintLandOnTexture(land);
       })
       .catch(() => {
-        // Fallback: if fetch fails, show nothing for continents
         console.warn("Failed to load world outline data");
       });
 
@@ -245,15 +238,16 @@ export default function Globe() {
     ARCS.forEach(([fromIdx, toIdx]) => {
       const from = HIT_LOCATIONS[fromIdx];
       const to = HIT_LOCATIONS[toIdx];
-      const startPos = latLngToVector3(from.lat, from.lng, 1.006);
-      const endPos = latLngToVector3(to.lat, to.lng, 1.006);
+      const startPos = latLngToVector3(from.lat, from.lng, 1.002);
+      const endPos = latLngToVector3(to.lat, to.lng, 1.002);
       const dist = startPos.distanceTo(endPos);
       const arcPts = createArcPoints(startPos, endPos, 48, dist * 0.15);
       const geo = new THREE.BufferGeometry().setFromPoints(arcPts);
       const mat = new THREE.LineBasicMaterial({
-        color: 0x8b2020,
+        color: 0xc9a84c,
         transparent: true,
-        opacity: 0.12,
+        opacity: 0.25,
+        depthTest: true,
       });
       arcGroup.add(new THREE.Line(geo, mat));
     });
@@ -274,7 +268,7 @@ export default function Globe() {
         map: dotGlowTexture,
         transparent: true,
         opacity: 0.5,
-        depthTest: false,
+        depthTest: true,
         blending: THREE.AdditiveBlending,
       });
       const glowSprite = new THREE.Sprite(glowSpriteMat);
@@ -287,7 +281,7 @@ export default function Globe() {
         map: dotTexture,
         transparent: true,
         opacity: 0.85,
-        depthTest: false,
+        depthTest: true,
       });
       const sprite = new THREE.Sprite(spriteMat);
       sprite.position.copy(pos);
@@ -304,11 +298,11 @@ export default function Globe() {
     function createPulse(pos: THREE.Vector3) {
       const geo = new THREE.RingGeometry(0.005, 0.012, 32);
       const mat = new THREE.MeshBasicMaterial({
-        color: 0x9b2525,
+        color: 0xc9a84c,
         transparent: true,
         opacity: 0.5,
         side: THREE.DoubleSide,
-        depthTest: false,
+        depthTest: true,
         blending: THREE.AdditiveBlending,
       });
       const mesh = new THREE.Mesh(geo, mat);
@@ -415,10 +409,10 @@ function createDotTexture(): HTMLCanvasElement {
   canvas.height = 64;
   const ctx = canvas.getContext("2d")!;
   const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 20);
-  gradient.addColorStop(0, "rgba(200, 55, 55, 1)");
-  gradient.addColorStop(0.5, "rgba(160, 35, 35, 0.9)");
-  gradient.addColorStop(0.8, "rgba(120, 25, 25, 0.3)");
-  gradient.addColorStop(1, "rgba(100, 20, 20, 0)");
+  gradient.addColorStop(0, "rgba(201, 168, 76, 1)");
+  gradient.addColorStop(0.5, "rgba(180, 140, 50, 0.9)");
+  gradient.addColorStop(0.8, "rgba(160, 120, 40, 0.3)");
+  gradient.addColorStop(1, "rgba(140, 100, 30, 0)");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 64, 64);
   return canvas;
@@ -430,10 +424,10 @@ function createDotGlowTexture(): HTMLCanvasElement {
   canvas.height = 128;
   const ctx = canvas.getContext("2d")!;
   const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-  gradient.addColorStop(0, "rgba(180, 50, 50, 0.6)");
-  gradient.addColorStop(0.3, "rgba(140, 30, 30, 0.2)");
-  gradient.addColorStop(0.6, "rgba(100, 20, 20, 0.05)");
-  gradient.addColorStop(1, "rgba(80, 15, 15, 0)");
+  gradient.addColorStop(0, "rgba(201, 168, 76, 0.6)");
+  gradient.addColorStop(0.3, "rgba(180, 140, 50, 0.2)");
+  gradient.addColorStop(0.6, "rgba(160, 120, 40, 0.05)");
+  gradient.addColorStop(1, "rgba(140, 100, 30, 0)");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 128, 128);
   return canvas;

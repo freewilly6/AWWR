@@ -4,9 +4,9 @@ import helpForHeroes from "@/lib/help-for-heros.jpg";
 import sowfCover from "@/lib/sowf_cover.png";
 
 export const metadata: Metadata = {
-  title: "Charities We Support | American — World Wide Recruitment",
+  title: "Charities We Support | United States — World Wide Recruitment",
   description:
-    "American — World Wide Recruitment proudly supports Help for Heroes and the Special Operations Warrior Foundation.",
+    "United States — World Wide Recruitment proudly supports Help for Heroes and the Special Operations Warrior Foundation.",
 };
 
 export default function CharitiesPage() {

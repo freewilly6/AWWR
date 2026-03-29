@@ -22,7 +22,7 @@ export default function Home() {
 
         {/* Title */}
         <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[0.03em] text-center px-6 pinstripe-text animate-fade-up animate-delay-1">
-          American — World Wide Recruitment
+          United States — World Wide Recruitment
         </h1>
 
         {/* Thin gold rule */}

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact | American — World Wide Recruitment",
+  title: "Contact | United States — World Wide Recruitment",
   description:
-    "Contact American — World Wide Recruitment for executive search and retained recruitment enquiries.",
+    "Contact United States — World Wide Recruitment for executive search and retained recruitment enquiries.",
 };
 
 export default function ContactPage() {
@@ -39,7 +39,7 @@ export default function ContactPage() {
 
             <div className="border-t border-gold-muted/10 pt-6">
               <p className="text-offwhite/30 text-xs leading-relaxed">
-                American — World Wide Recruitment operates across the United
+                United States — World Wide Recruitment operates across the United
                 States and selected global business locations. All enquiries are
                 handled with the strictest confidence.
               </p>

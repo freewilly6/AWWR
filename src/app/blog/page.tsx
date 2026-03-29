@@ -4,7 +4,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Blog | American — World Wide Recruitment",
+  title: "Blog | United States — World Wide Recruitment",
   description:
     "Insights and commentary on executive recruitment, global talent markets, and corporate leadership.",
 };

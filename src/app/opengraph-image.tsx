@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "American — World Wide Recruitment | Global Executive Search & Headhunting";
+  "United States — World Wide Recruitment | Global Executive Search & Headhunting";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -26,7 +26,7 @@ export default async function OGImage() {
             letterSpacing: "-0.02em",
           }}
         >
-          AWWR
+          USWWR
         </span>
       </div>
     ),
