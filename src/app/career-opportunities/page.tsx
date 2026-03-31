@@ -27,7 +27,7 @@ export default async function CareerOpportunitiesPage({
         </p>
 
         {/* Page title */}
-        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold pinstripe-text mb-10">
+        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-gold mb-14">
           Career Opportunities
         </h1>
 

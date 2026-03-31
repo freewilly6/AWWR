@@ -13,7 +13,7 @@ export default function CharitiesPage() {
   return (
     <div className="min-h-screen bg-charcoal pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-6">
-        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold pinstripe-text mb-4">
+        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-goldmb-4">
           Charities We Support
         </h1>
 

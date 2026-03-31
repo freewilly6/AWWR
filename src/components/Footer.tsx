@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
-            <p className="font-heading text-gold/80 text-sm tracking-[0.15em] uppercase mb-4 font-medium">
+            <p className="font-heading text-gold text-sm tracking-[0.15em] uppercase mb-4 font-medium">
               United States — World Wide Recruitment
             </p>
             <p className="text-offwhite/30 text-[11px] leading-relaxed font-light tracking-wide">
@@ -45,10 +45,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-14 pt-6 border-t border-gold-muted/8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-offwhite/20 text-[10px] font-light tracking-wide">
+          <p className="text-gold text-[10px] font-light tracking-wide">
             &copy; {new Date().getFullYear()} United States — World Wide Recruitment
           </p>
-          <p className="text-offwhite/20 text-[10px] font-light tracking-[0.15em] uppercase">
+          <p className="text-gold text-[10px] font-light tracking-[0.15em] uppercase">
             Jonny Scott-Slater
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function Footer() {
             href="https://www.codecraftstudios.net/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gold transition-colors duration-400"
+            className="text-gold hover:text-gold/70 transition-colors duration-400"
           >
             CodeCraft Studios
           </a>

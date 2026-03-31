@@ -15,7 +15,7 @@ export default async function BlogPage() {
   return (
     <div className="min-h-screen bg-charcoal-light pt-24 pb-16">
       <div className="max-w-4xl mx-auto px-6">
-        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold pinstripe-text mb-10 pb-1">
+        <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-gold mb-14 pb-1">
           Blog
         </h1>
 

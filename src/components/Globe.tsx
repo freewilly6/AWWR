@@ -109,7 +109,7 @@ export default function Globe() {
     const earthCtx = earthCanvas.getContext("2d")!;
 
     // Ocean blue background
-    earthCtx.fillStyle = "#1a4a7a";
+    earthCtx.fillStyle = "#2a6ab0";
     earthCtx.fillRect(0, 0, 2048, 1024);
 
     const earthTexture = new THREE.CanvasTexture(earthCanvas);
@@ -135,12 +135,8 @@ export default function Globe() {
         varying vec2 vUv;
         void main() {
           vec3 texColor = texture2D(earthMap, vUv).rgb;
-          float rim = 1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0)));
-          float rimPow = pow(rim, 3.0);
-          vec3 rimColor = vec3(0.79, 0.66, 0.30);
-          float rimGlow = pow(rim, 2.0);
-          vec3 color = texColor + rimColor * rimGlow * 0.7;
-          float alpha = 0.9 + rimPow * 0.1;
+          vec3 color = texColor * 1.3;
+          float alpha = 1.0;
           gl_FragColor = vec4(color, alpha);
         }
       `,
@@ -194,14 +190,14 @@ export default function Globe() {
 
       // Fill land with green/brown earth tones
       const landGradient = earthCtx.createLinearGradient(0, 0, 0, 1024);
-      landGradient.addColorStop(0, "#6b8a5e");    // northern tundra green
-      landGradient.addColorStop(0.15, "#5a7a4a"); // taiga
-      landGradient.addColorStop(0.3, "#4a7a3a");  // temperate green
-      landGradient.addColorStop(0.45, "#8a7a3a"); // arid/desert tan
-      landGradient.addColorStop(0.55, "#3a7a2a"); // tropical green
-      landGradient.addColorStop(0.7, "#4a7a3a");  // southern temperate
-      landGradient.addColorStop(0.85, "#5a7a4a"); // southern lands
-      landGradient.addColorStop(1, "#dde8dd");    // Antarctica white
+      landGradient.addColorStop(0, "#8db87e");    // northern tundra green
+      landGradient.addColorStop(0.15, "#7aaa6a"); // taiga
+      landGradient.addColorStop(0.3, "#6aaa5a");  // temperate green
+      landGradient.addColorStop(0.45, "#c0a850"); // arid/desert tan
+      landGradient.addColorStop(0.55, "#5aaa4a"); // tropical green
+      landGradient.addColorStop(0.7, "#6aaa5a");  // southern temperate
+      landGradient.addColorStop(0.85, "#7aaa6a"); // southern lands
+      landGradient.addColorStop(1, "#eef4ee");    // Antarctica white
       earthCtx.fillStyle = landGradient;
 
       geojson.features.forEach((feat) => {
@@ -216,7 +212,7 @@ export default function Globe() {
       });
 
       // Stroke continent outlines for crisp definition
-      earthCtx.strokeStyle = "rgba(201, 168, 76, 0.18)";
+      earthCtx.strokeStyle = "rgba(201, 168, 76, 0.35)";
       earthCtx.lineWidth = 1.5;
       earthCtx.lineJoin = "round";
 
@@ -306,32 +302,20 @@ export default function Globe() {
 
     // Dot sprites with glow
     const dotTexture = new THREE.CanvasTexture(createDotTexture());
-    const dotGlowTexture = new THREE.CanvasTexture(createDotGlowTexture());
+
 
     dotPositions.forEach((pos) => {
-      // Glow layer
-      const glowSpriteMat = new THREE.SpriteMaterial({
-        map: dotGlowTexture,
-        transparent: true,
-        opacity: 0.5,
-        depthTest: true,
-        blending: THREE.AdditiveBlending,
-      });
-      const glowSprite = new THREE.Sprite(glowSpriteMat);
-      glowSprite.position.copy(pos);
-      glowSprite.scale.set(0.08, 0.08, 1);
-      globeGroup.add(glowSprite);
-
       // Core dot
       const spriteMat = new THREE.SpriteMaterial({
         map: dotTexture,
         transparent: true,
-        opacity: 0.85,
+        opacity: 1.0,
+        blending: THREE.AdditiveBlending,
         depthTest: true,
       });
       const sprite = new THREE.Sprite(spriteMat);
       sprite.position.copy(pos);
-      sprite.scale.set(0.03, 0.03, 1);
+      sprite.scale.set(0.045, 0.045, 1);
       globeGroup.add(sprite);
     });
 
@@ -399,26 +383,12 @@ function createDotTexture(): HTMLCanvasElement {
   canvas.height = 64;
   const ctx = canvas.getContext("2d")!;
   const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 20);
-  gradient.addColorStop(0, "rgba(201, 168, 76, 1)");
-  gradient.addColorStop(0.5, "rgba(180, 140, 50, 0.9)");
-  gradient.addColorStop(0.8, "rgba(160, 120, 40, 0.3)");
-  gradient.addColorStop(1, "rgba(140, 100, 30, 0)");
+  gradient.addColorStop(0, "rgba(255, 230, 120, 1)");
+  gradient.addColorStop(0.4, "rgba(240, 200, 80, 1)");
+  gradient.addColorStop(0.7, "rgba(220, 180, 60, 0.6)");
+  gradient.addColorStop(1, "rgba(200, 160, 40, 0)");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 64, 64);
   return canvas;
 }
 
-function createDotGlowTexture(): HTMLCanvasElement {
-  const canvas = document.createElement("canvas");
-  canvas.width = 128;
-  canvas.height = 128;
-  const ctx = canvas.getContext("2d")!;
-  const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-  gradient.addColorStop(0, "rgba(201, 168, 76, 0.6)");
-  gradient.addColorStop(0.3, "rgba(180, 140, 50, 0.2)");
-  gradient.addColorStop(0.6, "rgba(160, 120, 40, 0.05)");
-  gradient.addColorStop(1, "rgba(140, 100, 30, 0)");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, 128, 128);
-  return canvas;
-}

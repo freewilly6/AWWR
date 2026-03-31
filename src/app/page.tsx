@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import GlobeWrapper from "@/components/GlobeWrapper";
 import CategoryStrip from "@/components/CategoryStrip";
+
+export const metadata: Metadata = {
+  title: "United States — World Wide Recruitment | Executive Search & Headhunting",
+  description:
+    "Global executive search, headhunting, and retained recruitment. Placing senior leaders across law, finance, engineering, AI, medicine, and industry worldwide.",
+};
 
 export default function Home() {
   return (
@@ -21,7 +28,7 @@ export default function Home() {
         </div>
 
         {/* Title */}
-        <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[0.03em] text-center px-6 pinstripe-text animate-fade-up animate-delay-1">
+        <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[0.03em] text-center px-6 text-gold animate-fade-up animate-delay-1">
           <span className="block sm:inline">United States</span>
           <span className="block sm:hidden leading-none py-0.5">—</span>
           <span className="hidden sm:inline"> — </span>
@@ -48,7 +55,7 @@ export default function Home() {
                     aria-hidden="true"
                   />
                 )}
-                <span className="text-gold-muted/70 text-sm sm:text-base tracking-[0.25em] uppercase font-heading font-medium">
+                <span className="text-gold text-base sm:text-lg tracking-[0.25em] uppercase font-heading font-bold">
                   {line}
                 </span>
               </span>
