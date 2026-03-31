@@ -38,6 +38,13 @@ export default function ContactPage() {
             </div>
 
             <div className="border-t border-gold-muted/10 pt-6">
+              <h2 className="text-gold text-xs tracking-[0.2em] uppercase mb-2 font-heading">
+                Business Location
+              </h2>
+              <p className="text-offwhite/70">Southern United States</p>
+            </div>
+
+            <div className="border-t border-gold-muted/10 pt-6">
               <p className="text-offwhite/30 text-xs leading-relaxed">
                 United States — World Wide Recruitment operates across the United
                 States and selected global business locations. All enquiries are

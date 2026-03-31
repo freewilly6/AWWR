@@ -37,7 +37,9 @@ export const LOCATION_REGIONS = [
   "African Nations",
   "Caribbean",
   "South America",
-  "North America",
+  "Alaska",
+  "World-Wide",
+  "Greenland",
   "Europe",
   "Offshore",
 ] as const;
