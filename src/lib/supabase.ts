@@ -33,15 +33,15 @@ export const JOB_CATEGORIES = [
 ] as const;
 
 export const LOCATION_REGIONS = [
-  "United States",
   "African Nations",
-  "Caribbean",
-  "South America",
   "Alaska",
-  "World-Wide",
-  "Greenland",
+  "Caribbean",
   "Europe",
+  "Greenland",
   "Offshore",
+  "South America",
+  "United States",
+  "World-Wide",
 ] as const;
 
 function getClient() {
