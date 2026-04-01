@@ -35,6 +35,8 @@ export const JOB_CATEGORIES = [
 export const LOCATION_REGIONS = [
   "African Nations",
   "Alaska",
+  "Asia Pacific",
+  "Canada",
   "Caribbean",
   "Europe",
   "Greenland",

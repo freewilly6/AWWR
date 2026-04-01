@@ -109,7 +109,7 @@ export default function Globe() {
     const earthCtx = earthCanvas.getContext("2d")!;
 
     // Ocean blue background
-    earthCtx.fillStyle = "#2a6ab0";
+    earthCtx.fillStyle = "#0a3d91";
     earthCtx.fillRect(0, 0, 2048, 1024);
 
     const earthTexture = new THREE.CanvasTexture(earthCanvas);
@@ -304,15 +304,17 @@ export default function Globe() {
     const dotTexture = new THREE.CanvasTexture(createDotTexture());
 
 
+    const dotMaterials: THREE.SpriteMaterial[] = [];
     dotPositions.forEach((pos) => {
       // Core dot
       const spriteMat = new THREE.SpriteMaterial({
         map: dotTexture,
         transparent: true,
         opacity: 1.0,
-        blending: THREE.AdditiveBlending,
+        blending: THREE.NormalBlending,
         depthTest: true,
       });
+      dotMaterials.push(spriteMat);
       const sprite = new THREE.Sprite(spriteMat);
       sprite.position.copy(pos);
       sprite.scale.set(0.045, 0.045, 1);
@@ -341,6 +343,11 @@ export default function Globe() {
       arcGroup.children.forEach((child, idx) => {
         const mat = (child as THREE.Line).material as THREE.LineBasicMaterial;
         mat.opacity = 0.08 + Math.sin(elapsed * 0.5 + idx * 0.7) * 0.05;
+      });
+
+      // Blink hit dots — each offset so they don't all blink in sync
+      dotMaterials.forEach((mat, idx) => {
+        mat.opacity = 0.4 + Math.sin(elapsed * 2.0 + idx * 1.3) * 0.6;
       });
 
       renderer.render(scene, camera);
@@ -383,10 +390,10 @@ function createDotTexture(): HTMLCanvasElement {
   canvas.height = 64;
   const ctx = canvas.getContext("2d")!;
   const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 20);
-  gradient.addColorStop(0, "rgba(255, 230, 120, 1)");
-  gradient.addColorStop(0.4, "rgba(240, 200, 80, 1)");
-  gradient.addColorStop(0.7, "rgba(220, 180, 60, 0.6)");
-  gradient.addColorStop(1, "rgba(200, 160, 40, 0)");
+  gradient.addColorStop(0, "rgba(200, 30, 30, 1)");
+  gradient.addColorStop(0.4, "rgba(170, 20, 20, 0.9)");
+  gradient.addColorStop(0.7, "rgba(140, 15, 15, 0.5)");
+  gradient.addColorStop(1, "rgba(120, 10, 10, 0)");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 64, 64);
   return canvas;

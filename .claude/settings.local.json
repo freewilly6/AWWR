@@ -31,7 +31,10 @@
       "Bash(grep -r \"globe\\\\|Globe\\\\|3d\\\\|3D\" /c/Users/Aaron/Head-Hunter/src --include=*.css --include=*.tsx --include=*.ts)",
       "Bash(grep -r viewport /c/Users/Aaron/Head-Hunter/src --include=*.tsx)",
       "Bash(xargs wc:*)",
-      "Bash(find /c/Users/Aaron/Head-Hunter -maxdepth 2 -name tsconfig* -o -name .robots* -o -name robots*)"
+      "Bash(find /c/Users/Aaron/Head-Hunter -maxdepth 2 -name tsconfig* -o -name .robots* -o -name robots*)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \"LISTENING\")",
+      "Bash(findstr \":3000 :3001 :5173 :8080 :8000 :4200\")"
     ]
   }
 }

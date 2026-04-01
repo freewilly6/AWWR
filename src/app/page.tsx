@@ -28,7 +28,7 @@ export default function Home() {
         </div>
 
         {/* Title */}
-        <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[0.03em] text-center px-6 text-gold animate-fade-up animate-delay-1">
+        <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-[0.03em] text-center px-6 text-gold animate-fade-up animate-delay-1">
           <span className="block sm:inline">United States</span>
           <span className="block sm:hidden leading-none py-0.5">—</span>
           <span className="hidden sm:inline"> — </span>

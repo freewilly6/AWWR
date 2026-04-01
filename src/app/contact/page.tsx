@@ -45,7 +45,7 @@ export default function ContactPage() {
             </div>
 
             <div className="border-t border-gold-muted/10 pt-6">
-              <p className="text-offwhite/30 text-xs leading-relaxed">
+              <p className="text-gold text-xs leading-relaxed">
                 United States — World Wide Recruitment operates across the United
                 States and selected global business locations. All enquiries are
                 handled with the strictest confidence.
