@@ -27,6 +27,7 @@ type FormData = {
   post_type: "blog" | "job";
   job_category: string;
   location_region: string;
+  salary: string;
   status: "draft" | "published";
   seo_title: string;
   meta_description: string;
@@ -40,6 +41,7 @@ const emptyForm: FormData = {
   post_type: "blog",
   job_category: "",
   location_region: "",
+  salary: "",
   status: "draft",
   seo_title: "",
   meta_description: "",
@@ -106,6 +108,7 @@ function AdminContent() {
       post_type: post.post_type,
       job_category: post.job_category || "",
       location_region: post.location_region || "",
+      salary: post.salary || "",
       status: post.status,
       seo_title: post.seo_title || "",
       meta_description: post.meta_description || "",
@@ -132,6 +135,8 @@ function AdminContent() {
         form.post_type === "job" ? form.job_category || null : null,
       location_region:
         form.post_type === "job" ? form.location_region || null : null,
+      salary:
+        form.post_type === "job" ? form.salary || null : null,
       status: form.status,
       seo_title: form.seo_title || null,
       meta_description: form.meta_description || null,
@@ -476,7 +481,22 @@ function AdminContent() {
 
           {/* Job-specific fields */}
           {form.post_type === "job" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 border border-gold-muted/10 p-4">
+            <div className="space-y-6 border border-gold-muted/10 p-4">
+              <div>
+                <label className="text-gold text-xs tracking-[0.15em] uppercase block mb-2">
+                  Salary
+                </label>
+                <input
+                  type="text"
+                  value={form.salary}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, salary: e.target.value }))
+                  }
+                  placeholder="e.g. $500,000 or $400,000 - $600,000"
+                  className="w-full bg-charcoal-mid border border-gold-muted/20 text-offwhite px-4 py-3 text-sm focus:outline-none focus:border-gold-muted/40 placeholder:text-offwhite/20"
+                />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className="text-gold text-xs tracking-[0.15em] uppercase block mb-2">
                   Job Category
@@ -520,6 +540,7 @@ function AdminContent() {
                     </option>
                   ))}
                 </select>
+              </div>
               </div>
             </div>
           )}

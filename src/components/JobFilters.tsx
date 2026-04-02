@@ -134,7 +134,7 @@ export default function JobFilters({
                     {post.excerpt}
                   </p>
                 </div>
-                <div className="flex flex-col items-start sm:items-end gap-1 sm:min-w-[160px]">
+                <div className="flex flex-col items-start sm:items-end gap-3 sm:min-w-[160px]">
                   {post.job_category && (
                     <span className="text-gold-muted text-xs tracking-[0.1em] uppercase">
                       {post.job_category}
@@ -143,6 +143,11 @@ export default function JobFilters({
                   {post.location_region && (
                     <span className="text-offwhite/30 text-xs">
                       {post.location_region}
+                    </span>
+                  )}
+                  {post.salary && (
+                    <span className="text-gold text-xs tracking-[0.1em] uppercase">
+                      {post.salary}
                     </span>
                   )}
                 </div>

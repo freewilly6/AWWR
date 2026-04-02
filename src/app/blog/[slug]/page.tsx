@@ -73,6 +73,14 @@ export default async function BlogPostPage({
             {post.title}
           </h1>
 
+          {post.salary && (
+            <div className="mb-6">
+              <span className="text-gold font-heading text-2xl font-bold tracking-wide">
+                {post.salary}
+              </span>
+            </div>
+          )}
+
           <div className="flex flex-wrap items-center gap-4 mb-8 text-xs text-offwhite/30">
             <time>
               {new Date(post.published_at).toLocaleDateString("en-US", {

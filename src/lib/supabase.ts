@@ -11,6 +11,7 @@ export type Post = {
   post_type: "blog" | "job";
   job_category: string | null;
   location_region: string | null;
+  salary: string | null;
   status: "draft" | "published";
   seo_title: string | null;
   meta_description: string | null;

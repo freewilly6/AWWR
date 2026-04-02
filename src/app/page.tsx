@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import GlobeWrapper from "@/components/GlobeWrapper";
 import CategoryStrip from "@/components/CategoryStrip";
+import FeaturedJobCarousel from "@/components/FeaturedJobCarousel";
+import { fetchPosts } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "United States — World Wide Recruitment | Executive Search & Headhunting",
@@ -8,7 +10,9 @@ export const metadata: Metadata = {
     "Global executive search, headhunting, and retained recruitment. Placing senior leaders across law, finance, engineering, AI, medicine, and industry worldwide.",
 };
 
-export default function Home() {
+export default async function Home() {
+  const jobs = await fetchPosts("job");
+
   return (
     <>
       {/* Hero */}
@@ -41,8 +45,8 @@ export default function Home() {
         </div>
 
         {/* Tagline row */}
-        <div className="mt-8 w-full max-w-5xl px-6 animate-fade-up animate-delay-3">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-0 text-center">
+        <div className="mt-8 w-full max-w-6xl px-6 animate-fade-up animate-delay-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-0 text-center sm:whitespace-nowrap">
             {[
               "Head Hunter",
               "Executive Search",
@@ -51,11 +55,11 @@ export default function Home() {
               <span key={i} className="flex items-center justify-center">
                 {i > 0 && (
                   <span
-                    className="hidden sm:inline-block w-px h-4 bg-gold-muted/30 mx-10"
+                    className="hidden sm:inline-block w-px h-4 bg-gold-muted/30 mx-6 lg:mx-10"
                     aria-hidden="true"
                   />
                 )}
-                <span className="text-gold text-base sm:text-lg tracking-[0.25em] uppercase font-heading font-bold">
+                <span className="text-gold text-base sm:text-sm lg:text-lg tracking-[0.25em] uppercase font-heading font-bold">
                   {line}
                 </span>
               </span>
@@ -63,11 +67,14 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll hint */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-fade-in animate-delay-5">
-          <div className="w-px h-8 bg-gradient-to-b from-transparent via-gold-muted/30 to-transparent" />
-        </div>
       </section>
+
+      {/* Featured job */}
+      <div className="bg-charcoal pt-6 sm:-mt-6 pb-0 sm:pb-4">
+        <div className="max-w-5xl mx-auto px-6">
+          <FeaturedJobCarousel jobs={jobs} />
+        </div>
+      </div>
 
       {/* Category strip */}
       <CategoryStrip />
