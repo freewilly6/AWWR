@@ -4,6 +4,8 @@ import CategoryStrip from "@/components/CategoryStrip";
 import FeaturedJobCarousel from "@/components/FeaturedJobCarousel";
 import { fetchPosts } from "@/lib/posts";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "United States — World Wide Recruitment | Executive Search & Headhunting",
   description:
