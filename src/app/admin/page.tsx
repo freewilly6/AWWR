@@ -81,7 +81,8 @@ function AdminContent() {
   const generateSlug = (title: string) =>
     title
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/[^a-z0-9-]/g, "-")
+      .replace(/-+/g, "-")
       .replace(/(^-|-$)/g, "");
 
   const handleTitleChange = (val: string) => {
@@ -127,7 +128,7 @@ function AdminContent() {
 
     const payload = {
       title: form.title,
-      slug: form.slug,
+      slug: generateSlug(form.slug),
       excerpt: form.excerpt,
       body: form.body,
       post_type: form.post_type,
@@ -402,7 +403,7 @@ function AdminContent() {
               type="text"
               value={form.slug}
               onChange={(e) =>
-                setForm((prev) => ({ ...prev, slug: e.target.value }))
+                setForm((prev) => ({ ...prev, slug: generateSlug(e.target.value) }))
               }
               className="w-full bg-charcoal-mid border border-gold-muted/20 text-offwhite/50 px-4 py-3 text-sm focus:outline-none focus:border-gold-muted/40"
               required
