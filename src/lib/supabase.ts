@@ -27,10 +27,12 @@ export const JOB_CATEGORIES = [
   "Finance",
   "Engineering",
   "Robotics",
-  "Medicine",
+  "Medical",
   "Accounting",
   "HR",
   "IT",
+  "Telecommunications",
+  "Hospitality",
 ] as const;
 
 export const LOCATION_REGIONS = [
