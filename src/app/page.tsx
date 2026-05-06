@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: "United States — World Wide Recruitment | Executive Search & Headhunting",
   description:
     "Global executive search, headhunting, and retained recruitment. Placing senior leaders across law, finance, engineering, AI, medicine, and industry worldwide.",
+  other: {
+    "trustpilot-one-time-domain-verification-id":
+      "7fc04a22-aa28-4a1d-a55f-81f4a3c11445",
+  },
 };
 
 export default async function Home() {
