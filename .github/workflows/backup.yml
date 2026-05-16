@@ -1,0 +1,59 @@
+name: Supabase backup
+
+# Weekly backup of the Supabase Postgres database using the Supabase CLI.
+# Produces three files (roles, schema, data) and uploads them as a GitHub
+# Actions artifact (90-day retention on the free tier). The repo is public,
+# so we deliberately do NOT commit the dump back into it.
+# Restore instructions live in supabase/BACKUP.md.
+
+on:
+  schedule:
+    - cron: "0 3 * * 0" # Every Sunday at 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+
+    steps:
+      - name: Verify secret is set
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::error::SUPABASE_DB_URL secret is not set. See supabase/BACKUP.md."
+            exit 1
+          fi
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Prepare output folder
+        run: |
+          STAMP=$(date -u +'%Y-%m-%dT%H%M%SZ')
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+          echo "OUT_DIR=backups/$STAMP" >> "$GITHUB_ENV"
+          mkdir -p "backups/$STAMP"
+
+      - name: Backup roles
+        run: supabase db dump --db-url "$SUPABASE_DB_URL" -f "$OUT_DIR/roles.sql" --role-only
+
+      - name: Backup schema
+        run: supabase db dump --db-url "$SUPABASE_DB_URL" -f "$OUT_DIR/schema.sql"
+
+      - name: Backup data
+        run: supabase db dump --db-url "$SUPABASE_DB_URL" -f "$OUT_DIR/data.sql" --data-only --use-copy
+
+      - name: Show backup sizes
+        run: ls -lh "$OUT_DIR"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-backup-${{ env.STAMP }}
+          path: backups/${{ env.STAMP }}/*.sql
+          retention-days: 90
+          if-no-files-found: error

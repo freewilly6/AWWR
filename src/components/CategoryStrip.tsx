@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getAllSettings } from "@/lib/settings";
 
 const SECTORS: { label: string; category?: string }[] = [
   { label: "Law" },
@@ -15,7 +16,8 @@ const SECTORS: { label: string; category?: string }[] = [
   { label: "Telecom", category: "Telecommunications" },
 ];
 
-export default function CategoryStrip() {
+export default async function CategoryStrip() {
+  const settings = await getAllSettings();
   return (
     <section className="w-full bg-charcoal">
       {/* Top separator */}
@@ -61,7 +63,7 @@ export default function CategoryStrip() {
           <div className="inline-flex items-center gap-4">
             <span className="w-8 h-px bg-gold-muted/20" />
             <p className="text-gold text-xl sm:text-2xl tracking-[0.3em] uppercase font-heading font-extrabold">
-              Jonny Scott&#8209;Slater
+              {settings.principal_name.replace(/-/g, "‑")}
             </p>
             <span className="w-8 h-px bg-gold-muted/20" />
           </div>

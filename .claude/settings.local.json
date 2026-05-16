@@ -36,7 +36,13 @@
       "Bash(findstr \"LISTENING\")",
       "Bash(findstr \":3000 :3001 :5173 :8080 :8000 :4200\")",
       "Bash(git log:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(npm uninstall *)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(NEXT_TELEMETRY_DISABLED=1 npx next build)",
+      "Bash(gh repo *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

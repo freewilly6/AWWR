@@ -1,5 +1,6 @@
 import { fetchPosts } from "@/lib/posts";
 import JobFilters from "@/components/JobFilters";
+import { getAllSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,10 @@ export default async function CareerOpportunitiesPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const params = await searchParams;
-  const jobs = await fetchPosts("job");
+  const [jobs, settings] = await Promise.all([
+    fetchPosts("job"),
+    getAllSettings(),
+  ]);
 
   return (
     <div className="min-h-screen bg-charcoal pt-24 pb-16">
@@ -27,8 +31,7 @@ export default async function CareerOpportunitiesPage({
 
         {/* Intro line */}
         <p className="text-gold text-sm tracking-wide leading-relaxed mb-14 border-b border-gold-muted/10 pb-8">
-          Executive recruitment business with world-wide clients situated in the
-          United States and other selected global business locations.
+          {settings.careers_intro}
         </p>
 
         <JobFilters initialPosts={jobs} initialCategory={params.category} />

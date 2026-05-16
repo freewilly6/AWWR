@@ -17,6 +17,7 @@ export type Post = {
   meta_description: string | null;
   created_at: string;
   updated_at: string;
+  deleted_at?: string | null;
 };
 
 export const JOB_CATEGORIES = [
@@ -32,6 +33,7 @@ export const JOB_CATEGORIES = [
   "HR",
   "IT",
   "Telecommunications",
+  "TV & Media",
   "Hospitality",
 ] as const;
 
@@ -61,10 +63,13 @@ export function getSupabaseClient() {
 
 export async function getPosts(type?: "blog" | "job") {
   const supabase = getClient();
+  const nowIso = new Date().toISOString();
   let query = supabase
     .from("posts")
     .select("*")
     .eq("status", "published")
+    .is("deleted_at", null)
+    .lte("published_at", nowIso)
     .order("published_at", { ascending: false });
 
   if (type) {
@@ -78,11 +83,14 @@ export async function getPosts(type?: "blog" | "job") {
 
 export async function getPostBySlug(slug: string) {
   const supabase = getClient();
+  const nowIso = new Date().toISOString();
   const { data, error } = await supabase
     .from("posts")
     .select("*")
     .eq("slug", slug)
     .eq("status", "published")
+    .is("deleted_at", null)
+    .lte("published_at", nowIso)
     .single();
 
   if (error) throw error;
@@ -94,11 +102,14 @@ export async function getFilteredJobs(
   regions: string[]
 ) {
   const supabase = getClient();
+  const nowIso = new Date().toISOString();
   let query = supabase
     .from("posts")
     .select("*")
     .eq("post_type", "job")
     .eq("status", "published")
+    .is("deleted_at", null)
+    .lte("published_at", nowIso)
     .order("published_at", { ascending: false });
 
   if (categories.length > 0) {
