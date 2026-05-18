@@ -8,7 +8,7 @@ export default function FeaturedJobCarousel({ jobs }: { jobs: Post[] }) {
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
-  const recent = jobs.slice(0, 10);
+  const recent = jobs;
 
   useEffect(() => {
     if (recent.length <= 1) return;

@@ -42,7 +42,9 @@
       "Bash(NEXT_TELEMETRY_DISABLED=1 npx next build)",
       "Bash(gh repo *)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(mkdir -p /c/Users/Aaron/USWWR)",
+      "Bash(tar --exclude='./.claude' --exclude='./.git' --exclude='./node_modules' --exclude='./.next' --exclude='./tsconfig.tsbuildinfo' -cf - .)"
     ]
   }
 }
