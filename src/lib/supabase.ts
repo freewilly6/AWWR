@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 export type Post = {
   id: string;
@@ -37,6 +37,11 @@ export const JOB_CATEGORIES = [
   "Hospitality",
 ] as const;
 
+// Columns for list/card views — everything except the heavy `body` HTML.
+// The full body is only fetched when viewing or editing a single post.
+export const POST_LIST_COLUMNS =
+  "id,title,slug,excerpt,published_at,featured_image,post_type,job_category,location_region,salary,status,seo_title,meta_description,created_at,updated_at,deleted_at";
+
 export const LOCATION_REGIONS = [
   "African Nations",
   "Alaska",
@@ -51,10 +56,18 @@ export const LOCATION_REGIONS = [
   "World-Wide",
 ] as const;
 
+// Single shared client. Creating a new client per call spins up a fresh
+// GoTrueClient each time — they all share one localStorage session key and
+// race each other refreshing the auth token, which inflates request volume
+// and can knock the session out mid-use.
+let client: SupabaseClient | null = null;
+
 function getClient() {
+  if (client) return client;
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  return createClient(url, key);
+  client = createClient(url, key);
+  return client;
 }
 
 export function getSupabaseClient() {
@@ -66,7 +79,7 @@ export async function getPosts(type?: "blog" | "job") {
   const nowIso = new Date().toISOString();
   let query = supabase
     .from("posts")
-    .select("*")
+    .select(POST_LIST_COLUMNS)
     .eq("status", "published")
     .is("deleted_at", null)
     .lte("published_at", nowIso)
@@ -105,7 +118,7 @@ export async function getFilteredJobs(
   const nowIso = new Date().toISOString();
   let query = supabase
     .from("posts")
-    .select("*")
+    .select(POST_LIST_COLUMNS)
     .eq("post_type", "job")
     .eq("status", "published")
     .is("deleted_at", null)

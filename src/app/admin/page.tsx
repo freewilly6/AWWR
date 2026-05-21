@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getSupabaseClient, type Post } from "@/lib/supabase";
+import { getSupabaseClient, POST_LIST_COLUMNS, type Post } from "@/lib/supabase";
 import { getSession } from "@/lib/auth";
 import type { User } from "@supabase/supabase-js";
 
@@ -66,7 +66,7 @@ export default function AdminDashboardPage() {
     const supabase = getSupabaseClient();
     supabase
       .from("posts")
-      .select("*")
+      .select(POST_LIST_COLUMNS)
       .order("updated_at", { ascending: false })
       .then(({ data }) => {
         if (data) setPosts(data as Post[]);

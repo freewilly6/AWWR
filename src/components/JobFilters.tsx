@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { JOB_CATEGORIES, LOCATION_REGIONS, type Post } from "@/lib/supabase";
 import { fetchFilteredJobs } from "@/lib/posts";
 import Link from "next/link";
@@ -47,9 +47,19 @@ export default function JobFilters({
     setLoading(false);
   }, [selectedCategories, selectedRegions]);
 
+  const isFirstRun = useRef(true);
   useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      // initialPosts already holds the server-fetched list. Only refetch on
+      // mount when a category was preselected via the URL, since initialPosts
+      // is unfiltered in that case.
+      if (selectedCategories.length === 0 && selectedRegions.length === 0) {
+        return;
+      }
+    }
     applyFilters();
-  }, [applyFilters]);
+  }, [applyFilters]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>

@@ -11,6 +11,7 @@ import {
   getSupabaseClient,
   JOB_CATEGORIES,
   LOCATION_REGIONS,
+  POST_LIST_COLUMNS,
   type Post,
 } from "@/lib/supabase";
 import dynamic from "next/dynamic";
@@ -85,7 +86,7 @@ function formFromPost(post: Post): FormData {
     title: post.title,
     slug: post.slug,
     excerpt: post.excerpt,
-    body: post.body,
+    body: post.body || "",
     post_type: post.post_type,
     job_category: post.job_category || "",
     location_region: post.location_region || "",
@@ -160,7 +161,7 @@ function AdminContent() {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from("posts")
-      .select("*")
+      .select(POST_LIST_COLUMNS)
       .order("created_at", { ascending: false });
     if (!error && data) {
       setPosts(data as Post[]);
@@ -286,7 +287,7 @@ function AdminContent() {
     setView("create");
   };
 
-  const startEdit = (post: Post) => {
+  const startEdit = async (post: Post) => {
     const f = formFromPost(post);
     setForm(f);
     initialFormRef.current = f;
@@ -295,6 +296,20 @@ function AdminContent() {
     setSavedAt(null);
     setSlugStatus("idle");
     setView("edit");
+
+    // List rows omit the heavy `body` column — fetch it now and patch it in.
+    if (!post.body) {
+      const supabase = getSupabaseClient();
+      const { data } = await supabase
+        .from("posts")
+        .select("body")
+        .eq("id", post.id)
+        .single();
+      const body = (data as { body: string } | null)?.body ?? "";
+      // Don't clobber the editor if it's already been typed into.
+      setForm((prev) => (prev.body ? prev : { ...prev, body }));
+      initialFormRef.current = { ...initialFormRef.current, body };
+    }
   };
 
   const goBackToList = () => {
@@ -409,12 +424,22 @@ function AdminContent() {
   };
   const duplicatePost = async (post: Post) => {
     const supabase = getSupabaseClient();
+    // List rows omit `body` — fetch the full text before copying.
+    let body = post.body;
+    if (!body) {
+      const { data } = await supabase
+        .from("posts")
+        .select("body")
+        .eq("id", post.id)
+        .single();
+      body = (data as { body: string } | null)?.body ?? "";
+    }
     const rand = Math.random().toString(36).slice(2, 6);
     const payload = {
       title: `${post.title} (copy)`,
       slug: `${post.slug}-copy-${rand}`,
       excerpt: post.excerpt,
-      body: post.body,
+      body,
       post_type: post.post_type,
       job_category: post.job_category,
       location_region: post.location_region,
