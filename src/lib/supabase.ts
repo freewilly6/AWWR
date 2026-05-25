@@ -35,6 +35,7 @@ export const JOB_CATEGORIES = [
   "Telecommunications",
   "TV & Media",
   "Hospitality",
+  "Property-Facility Management",
 ] as const;
 
 // Columns for list/card views — everything except the heavy `body` HTML.
