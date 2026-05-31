@@ -14,6 +14,10 @@ const SECTORS: { label: string; category?: string }[] = [
   { label: "HR" },
   { label: "IT" },
   { label: "Telecom", category: "Telecommunications" },
+  { label: "Strategy" },
+  { label: "Marketing" },
+  { label: "Econometrics" },
+  { label: "Director" },
 ];
 
 export default async function CategoryStrip() {

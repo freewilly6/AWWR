@@ -44,7 +44,11 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(mkdir -p /c/Users/Aaron/USWWR)",
-      "Bash(tar --exclude='./.claude' --exclude='./.git' --exclude='./node_modules' --exclude='./.next' --exclude='./tsconfig.tsbuildinfo' -cf - .)"
+      "Bash(tar --exclude='./.claude' --exclude='./.git' --exclude='./node_modules' --exclude='./.next' --exclude='./tsconfig.tsbuildinfo' -cf - .)",
+      "Bash(Start-Sleep -Seconds 6)",
+      "Bash(Get-Content \"C:\\\\Users\\\\Aaron\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-Aaron-Head-Hunter\\\\1f842107-42cb-4a8b-af26-c22745808c54\\\\tasks\\\\by4xvla0n.output\")",
+      "Bash(git add *)",
+      "Bash(git -c core.editor=true rebase --continue)"
     ]
   }
 }
