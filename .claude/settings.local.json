@@ -48,7 +48,9 @@
       "Bash(Start-Sleep -Seconds 6)",
       "Bash(Get-Content \"C:\\\\Users\\\\Aaron\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-Aaron-Head-Hunter\\\\1f842107-42cb-4a8b-af26-c22745808c54\\\\tasks\\\\by4xvla0n.output\")",
       "Bash(git add *)",
-      "Bash(git -c core.editor=true rebase --continue)"
+      "Bash(git -c core.editor=true rebase --continue)",
+      "PowerShell(git fetch *)",
+      "Bash(git mv *)"
     ]
   }
 }

@@ -9,7 +9,13 @@ CREATE TABLE IF NOT EXISTS posts (
   featured_image TEXT,
   post_type TEXT NOT NULL DEFAULT 'blog' CHECK (post_type IN ('blog', 'job')),
   job_category TEXT,
-  location_region TEXT,
+  location_region TEXT CONSTRAINT valid_location_region CHECK (
+    location_region IS NULL OR location_region IN (
+      'African Nations', 'Alaska', 'Asia Pacific', 'Canada', 'Caribbean',
+      'Europe', 'Greenland', 'Offshore', 'South America', 'United Kingdom',
+      'United States', 'World-Wide'
+    )
+  ),
   status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
   seo_title TEXT,
   meta_description TEXT,
