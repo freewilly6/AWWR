@@ -1,5 +1,5 @@
 import { fetchPostBySlug } from "@/lib/posts";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -26,6 +26,7 @@ export default async function OpportunityPage({
 
   if (!post) notFound();
 
-  // Reuse the blog post template — redirect to keep one canonical URL
-  redirect(`/blog/${slug}`);
+  // Reuse the blog post template — 308 so Google moves indexing to /blog/<slug>
+  // rather than treating this URL as the canonical one.
+  permanentRedirect(`/blog/${slug}`);
 }

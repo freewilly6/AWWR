@@ -8,6 +8,8 @@ export const metadata = {
   title: "Career Opportunities | United States — World Wide Recruitment",
   description:
     "Executive career opportunities worldwide. Browse retained and contingency search positions across law, finance, engineering, AI, medicine, and more.",
+  // ?category= filters are the same page; point them all at the unfiltered URL
+  alternates: { canonical: "/career-opportunities" },
 };
 
 export default async function CareerOpportunitiesPage({

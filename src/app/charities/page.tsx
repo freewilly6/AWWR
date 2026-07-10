@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Charities We Support | United States — World Wide Recruitment",
   description:
     "United States — World Wide Recruitment proudly supports Help for Heroes and the Special Operations Warrior Foundation.",
+  alternates: { canonical: "/charities" },
 };
 
 export default function CharitiesPage() {

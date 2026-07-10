@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Contact | United States — World Wide Recruitment",
   description:
     "Contact United States — World Wide Recruitment for executive search and retained recruitment enquiries.",
+  alternates: { canonical: "/contact" },
 };
 
 export default async function ContactPage() {

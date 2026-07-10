@@ -38,6 +38,7 @@ export async function generateMetadata({
   return {
     title: post.seo_title || `${post.title} | United States — World Wide Recruitment`,
     description: post.meta_description || post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
   };
 }
 

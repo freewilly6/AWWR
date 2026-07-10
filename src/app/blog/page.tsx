@@ -7,6 +7,7 @@ export const metadata = {
   title: "Blog | United States — World Wide Recruitment",
   description:
     "Insights and commentary on executive recruitment, global talent markets, and corporate leadership.",
+  alternates: { canonical: "/blog" },
 };
 
 export default async function BlogPage() {
